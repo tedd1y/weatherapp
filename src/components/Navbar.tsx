@@ -1,17 +1,18 @@
 import React from "react";
 import 'bulma/css/bulma.min.css';
-import { TiWeatherPartlySunny } from "react-icons/ti";
-
-// todo fix whitespace in blocks
+import './App.css';
+import { FaCloud } from "react-icons/fa";
 
 const Navbar = () => {
     return (
-        <nav className="navbar">
+        <nav className="navbar nav pl-6 pt-4 pb-4">
             <div className="navbar-item">
-                <i className="navbar-item" style={{color: "yellow", fontSize: "2rem"}}><TiWeatherPartlySunny/></i>
-            </div>
-            <div className="navbar-item">
-                <h1 className="title ml-6">Forecastly</h1>
+                <a className="title playwrite-hr-lijeva" href="/">
+                    <i className="pr-2" style={{fontSize: "2rem"}}>
+                        <FaCloud />
+                    </i>
+                    Forecastly
+                </a>
             </div>
         </nav>
     )

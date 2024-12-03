@@ -1,11 +1,14 @@
 import React, {useState} from "react";
 import 'bulma/css/bulma.min.css';
-import { IoMdRemove } from "react-icons/io";
-import { IoWater } from "react-icons/io5";
-import { TbTemperatureSnow, TbTemperatureSun} from "react-icons/tb";
-import { flag, name } from 'country-emoji';
-import {RiAddLargeFill} from "react-icons/ri";
 import axios from "axios";
+import { flag, name } from 'country-emoji';
+
+// Icons
+import { IoMdRemove } from "react-icons/io";
+import { IoWater, IoWaterOutline } from "react-icons/io5";
+import { TbTemperatureSnow, TbTemperatureSun } from "react-icons/tb";
+import { RiAddLargeFill } from "react-icons/ri";
+import { FiSunrise, FiSunset, FiWind } from "react-icons/fi";
 
 type WeatherData = {
     city: string;
@@ -19,47 +22,46 @@ type WeatherData = {
     units: string;
 };
 
-interface WeathergridProps {
-    forecasts: WeatherData[];
-    setForecasts: React.Dispatch<React.SetStateAction<WeatherData[]>>;
-}
-
-const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) => {
+const Weathergrid = () => {
+    const [forecasts, setForecasts] = useState<WeatherData[]>([]);
     const [city, setCity] = useState('');
     const [units, setUnits] = useState('metric');
     const [errorMessage, setErrorMessage] = useState("");
     const maxSize = 10;
 
-    const getWeather = () => {
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=38ac577a02d6d3ae82b169adb831d76b`)
-            .then(res => {
-                console.log(res);
+    const getWeather = async () => {
+        try {
+            const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=38ac577a02d6d3ae82b169adb831d76b`);
 
-                const weatherData: WeatherData = {
-                    city: res.data.name,
-                    country: res.data.sys.country,
-                    temp: res.data.main.temp,
-                    humidity: res.data.main.humidity,
-                    windspeed: res.data.wind.speed,
-                    pressure: res.data.main.pressure,
-                    sunrise: res.data.sys.sunrise,
-                    sunset: res.data.sys.sunset,
-                    units: units,
-                }
+            console.log(res);
 
-                for (let i = 0; i < forecasts.length; ) {
-                    if (weatherData.city === forecasts[i].city && weatherData.units === forecasts[i].units) {
-                        setErrorMessage("This city has already been added. Please choose a different city.");
-                        return;
-                    }
-                }
+            const weatherData: WeatherData = {
+                city: res.data.name,
+                country: res.data.sys.country,
+                temp: res.data.main.temp,
+                humidity: res.data.main.humidity,
+                windspeed: res.data.wind.speed,
+                pressure: res.data.main.pressure,
+                sunrise: res.data.sys.sunrise,
+                sunset: res.data.sys.sunset,
+                units: units,
+            }
 
-                setForecasts((prevData: WeatherData[]) => [...prevData, weatherData]);
-            }).catch(error => {
-                setErrorMessage("City has not been found. Please check the name.");
-                console.error(error);
-            });
-    }
+            const isDuplicate = forecasts.some(
+                (forecast) => forecast.city === weatherData.city && forecast.units === weatherData.units
+            );
+
+            if (isDuplicate) {
+                setErrorMessage("This city has already been added. Please choose a different city.");
+                return;
+            }
+
+            setForecasts((prevData: WeatherData[]) => [...prevData, weatherData]);
+        } catch (error) {
+            setErrorMessage("City has not been found. Please check the name.");
+            console.error(error);
+        }
+    };
 
     const getTime = (timestamp: number): string => {
         const date = new Date(1000 * timestamp);
@@ -69,7 +71,7 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
 
     const removeForecast = (index: number) => {
         const updateForecasts = forecasts
-            .filter((WeatherData, i) => i !== index);
+            .filter((_, i) => i !== index);
         setForecasts(updateForecasts);
     }
 
@@ -91,9 +93,9 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
 
     return (
         <div className="container">
-
-            <nav className="navbar is-flex is-justify-content-left is-align-items-left">
-                <div className="navbar-item" style={{height: '80px'}}>
+            {/*Maybe move this*/}
+            <nav className="navbar is-flex is-justify-content-left is-align-items-left mt-4 mb-4">
+                <div className="navbar-item">
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -118,7 +120,6 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
                                     </select>
                                 </div>
                             </div>
-
 
                             <div className="control">
                                 <input
@@ -162,23 +163,19 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
 
                                     <div className="columns is-multiline">
 
-                                        <div className="column is-half">
-                                            <h2 className="title is-4">{forecast.city}</h2>
-                                            <p className="subtitle is-6">{flag(forecast.country)} {name(forecast.country)}</p>
-                                        </div>
-
-                                        <div className="column is-half">
-                                            <div className="is-flex is-justify-content-right">
-                                                <button
-                                                    className="button is-danger"
-                                                    style={{height: 35, width: 35, padding: 0}}
-                                                    onClick={() => removeForecast(index)}
-                                                >
-                                                    <IoMdRemove/>
-                                                </button>
+                                        <div className="column is-full is-flex is-align-items-center is-justify-content-space-between">
+                                            <div>
+                                                <p className="title is-3">{forecast.city}</p>
+                                                <p className="subtitle is-6">{flag(forecast.country)} {name(forecast.country)}</p>
                                             </div>
+                                            <button
+                                                className="button is-danger p-0"
+                                                style={{height: 35, width: 35}}
+                                                onClick={() => removeForecast(index)}
+                                            >
+                                                <IoMdRemove/>
+                                            </button>
                                         </div>
-
 
                                         <div className="column is-half">
                                             <div className="box">
@@ -194,7 +191,7 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
                                             <div className="box">
                                                 <strong>Humidity: </strong>
                                                 <br/>
-                                                <p><IoWater/> {forecast.humidity} %</p>
+                                                <p>{ forecast.humidity > 50 ? <IoWater /> : <IoWaterOutline />} {forecast.humidity} %</p>
                                             </div>
                                         </div>
 
@@ -204,7 +201,7 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
                                                 <strong>Wind Speed: </strong>
                                                 <br/>
                                                 <p>
-                                                    {forecast.windspeed} {forecast.units === "metric" ? "meter/sec" : "miles/hour"}
+                                                   <FiWind /> {forecast.windspeed} {forecast.units === "metric" ? "meter/sec" : "miles/hour"}
                                                 </p>
 
                                                 <strong>Pressure: </strong>
@@ -220,11 +217,11 @@ const Weathergrid: React.FC<WeathergridProps> = ({ forecasts, setForecasts }) =>
                                             <div className="box">
                                                 <strong>Sunrise: </strong>
                                                 <br/>
-                                                <p>{getTime(forecast.sunrise)}</p>
+                                                <p><FiSunrise /> {getTime(forecast.sunrise)}</p>
 
                                                 <strong>Sunset: </strong>
                                                 <br/>
-                                                <p>{getTime(forecast.sunset)}</p>
+                                                <p><FiSunset /> {getTime(forecast.sunset)}</p>
 
                                             </div>
                                         </div>
