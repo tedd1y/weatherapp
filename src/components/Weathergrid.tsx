@@ -94,7 +94,7 @@ const Weathergrid = () => {
     return (
         <div className="container">
             {/*Maybe move this*/}
-            <nav className="navbar is-flex is-justify-content-left is-align-items-left mt-4 mb-4">
+            <nav className="navbar is-flex is-align-items-center is-justify-content-space-between my-4">
                 <div className="navbar-item">
                     <form
                         onSubmit={(e) => {
@@ -147,6 +147,9 @@ const Weathergrid = () => {
                         </p>
                     </form>
                 </div>
+                <div className="navbar-item">
+                    simple / detailed
+                </div>
             </nav>
 
 
@@ -155,11 +158,11 @@ const Weathergrid = () => {
                 <p className="subtitle is-6">No forecasts added. Add city to get current weather!</p>
                 </div>
             ) : (
-                <div className="fixed-grid has-2-cols">
+                <div className="fixed-grid has-2-cols has-1-cols-mobile has-3-cols-desktop">
                     <div className="grid">
 
                     {forecasts.map((forecast, index) =>
-                                <div className="box" style={{width: '100%'}}>
+                                <div className="box">
 
                                     <div className="columns is-multiline">
 
@@ -177,9 +180,9 @@ const Weathergrid = () => {
                                             </button>
                                         </div>
 
-                                        <div className="column is-half">
+                                        <div className="column is-half has-text-centered">
                                             <div className="box">
-                                                <strong>Temperature: </strong>
+                                                <strong className="">Temperature: </strong>
                                                 <br/>
                                                 <p>
                                                     {renderTemperatureIcon(forecast)} {forecast.temp} °{forecast.units === "metric" ? "C" : "F"}
@@ -187,7 +190,7 @@ const Weathergrid = () => {
                                             </div>
                                         </div>
 
-                                        <div className="column is-half">
+                                        <div className="column is-half has-text-centered">
                                             <div className="box">
                                                 <strong>Humidity: </strong>
                                                 <br/>
@@ -195,7 +198,7 @@ const Weathergrid = () => {
                                             </div>
                                         </div>
 
-                                        <div className="column is-half">
+                                        <div className="column is-half has-text-centered">
 
                                             <div className="box">
                                                 <strong>Wind Speed: </strong>
@@ -212,7 +215,7 @@ const Weathergrid = () => {
 
                                         </div>
 
-                                        <div className="column is-half">
+                                        <div className="column is-half has-text-centered">
 
                                             <div className="box">
                                                 <strong>Sunrise: </strong>
