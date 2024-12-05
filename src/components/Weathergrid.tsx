@@ -1,8 +1,4 @@
-// Icons
 import { IoMdRemove } from "react-icons/io";
-import { IoWater, IoWaterOutline } from "react-icons/io5";
-import { FiSunrise, FiSunset, FiWind } from "react-icons/fi";
-
 import React from "react";
 import 'bulma/css/bulma.min.css';
 import { flag, name } from 'country-emoji';
@@ -66,12 +62,10 @@ const Weathergrid: React.FC<Props> = ({ forecasts, setForecasts, layout }) => {
                 <p className="subtitle is-6">No forecasts added. Enter city to get current weather!</p>
                 </div>
             ) : (
-                <div className={`${layout === "grid" ? "fixed-grid has-2-cols has-1-cols-mobile has-3-cols-desktop" 
-                    : ""}`}>
+                <div className={`${layout === "grid" ? "fixed-grid has-1-cols-mobile has-2-cols-tablet has-3-cols-widescreen" : ""}`}>
                     <div className={`${layout === "grid" ? "grid" : ""}`}>
                         {forecasts.map((forecast, index) =>
-                                <div className="box" key={forecast.id}>
-
+                                <div className="box m-3" key={forecast.id}>
                                     <div className="columns is-multiline">
 
                                         <div className="column is-full is-flex is-align-items-center is-justify-content-space-between">
@@ -90,7 +84,7 @@ const Weathergrid: React.FC<Props> = ({ forecasts, setForecasts, layout }) => {
                                             </button>
                                         </div>
 
-                                        <div className={`${layout === "grid" ? "column is-half has-text-centered" : "column is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
+                                        <div className={`column ${layout === "grid" ? "is-half" : "is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
                                             <div className="box is-flex-grow-1">
                                                 <strong>Temperature: </strong>
                                                 <br/>
@@ -106,25 +100,25 @@ const Weathergrid: React.FC<Props> = ({ forecasts, setForecasts, layout }) => {
                                             </div>
                                         </div>
 
-                                        <div className={`${layout === "grid" ? "column is-half has-text-centered" : "column is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
+                                        <div className={`column ${layout === "grid" ? "is-half" : "is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
                                             <div className="box is-flex-grow-1">
                                                 <strong>Humidity: </strong>
                                                 <br/>
-                                                <p>{forecast.humidity > 50 ? <IoWater /> : <IoWaterOutline />} {forecast.humidity} %</p>
-
-                                                <strong>Rain:</strong>
+                                                <p>💧 {forecast.humidity} %</p>
+                                                {/*add func rain and snow*/}
+                                                <strong>{forecast.rain >= 0 ? "Rain:" : "Snow"}</strong>
                                                 <br/>
-                                                <p>{forecast.rain} mm/h</p>
+                                                <p>☁️ {forecast.rain} mm/h</p>
                                             </div>
                                         </div>
 
-                                        <div className={`${layout === "grid" ? "column is-half has-text-centered" : "column is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
+                                        <div className={`column ${layout === "grid" ? "is-half" : "is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
 
-                                            <div className="box">
+                                            <div className="box is-flex-grow-1">
                                                 <strong>Wind Speed: </strong>
                                                 <br/>
                                                 <p>
-                                                   <FiWind /> {forecast.windspeed} {forecast.units === "metric" ? "meter/sec" : "miles/hour"}
+                                                    💨 {forecast.windspeed} {forecast.units === "metric" ? "meter/sec" : "miles/hour"}
                                                 </p>
 
                                                 <strong>Pressure: </strong>
@@ -135,16 +129,16 @@ const Weathergrid: React.FC<Props> = ({ forecasts, setForecasts, layout }) => {
 
                                         </div>
 
-                                        <div className={`${layout === "grid" ? "column is-half has-text-centered" : "column is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
+                                        <div className={`column ${layout === "grid" ? "is-half" : "is-one-quarter"} is-flex is-flex-direction-column is-align-items-stretch`}>
 
-                                            <div className="box">
+                                            <div className="box is-flex-grow-1">
                                                 <strong>Sunrise: </strong>
                                                 <br/>
-                                                <p><FiSunrise /> {getTime(forecast.sunrise)}</p>
+                                                <p>☀️ {getTime(forecast.sunrise)}</p>
 
                                                 <strong>Sunset: </strong>
                                                 <br/>
-                                                <p><FiSunset /> {getTime(forecast.sunset)}</p>
+                                                <p>🌘 {getTime(forecast.sunset)}</p>
 
                                             </div>
                                         </div>
