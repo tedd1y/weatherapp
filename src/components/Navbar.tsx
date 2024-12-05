@@ -5,7 +5,7 @@ import { FaCloud } from "react-icons/fa";
 
 const Navbar = () => {
     return (
-        <nav className="navbar nav pl-6 pt-4 pb-4">
+        <nav className="navbar nav pl-6 pt-4 pb-4 has-text-centered-mobile">
             <div className="navbar-item">
                 <a className="title playwrite-hr-lijeva" href="/">
                     <i className="pr-2" style={{fontSize: "2rem"}}>
