@@ -22,13 +22,21 @@ Forcasty is a weather web application that provides real-time weather. Built wit
 Clone this repository to your local machine using the following command:
 
 `git clone https://github.com/tedd1y/weatherapp.git`
+
 `cd forcasty`
 
 ## 2. Install Dependencies
 Install the required dependencies using npm or yarn:
+
 `npm install` or `yarn install`
 
-## 3. Start the Development Server
+## 3. Add API key
+In the `src/components/Searchbar.tsx` 
+add your API key
+
+Get it form the https://openweathermap.org/ website
+
+## 4. Start the Development Server
 Run the application in development mode:
 
 ### `npm start`

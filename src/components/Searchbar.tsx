@@ -4,6 +4,8 @@ import React, {useState} from "react";
 import axios from "axios";
 import {v4 as uuidv4} from "uuid";
 
+const api = "";
+
 type WeatherData = {
     id: any;
     city: string;
@@ -35,7 +37,7 @@ const Searchbar: React.FC<Props> = ({ forecasts, setForecasts, layout, setLayout
 
     const getWeather = async () => {
         try {
-            const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=38ac577a02d6d3ae82b169adb831d76b`);
+            const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${api}`);
 
             console.log(res);
 
